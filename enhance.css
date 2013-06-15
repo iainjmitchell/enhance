@@ -2,7 +2,7 @@ input[type='text'], input[type='password'], textarea,
 input[type='submit'], input[type='button'], input[type='reset'],
 input[type='number'], input[type='date'], input[type='color'],
 input[type='search'], input[type='tel'], input[type='email'], input[type='url']{
-  -webkit-appearance: none;
+	-webkit-appearance: none;
 }
 input, textarea, select {
 	border: 1px solid rgba(0,0,0,.1);
@@ -45,7 +45,6 @@ input[type='search']:focus, input[type='tel']:focus, input[type='email']:focus, 
 
 input[type='submit'], input[type='button'], input[type='reset']{
 	background-color: #f5f5f5;
-    color: #444;
     font-weight: bold;
     -moz-border-radius: 3px;
 	-webkit-border-radius: 3px;
