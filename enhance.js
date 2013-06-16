@@ -1,6 +1,6 @@
 (function(document){
 
-  function enhanceSelects(){
+	function enhanceSelects(){
 		var count = 0,
 			selects = document.getElementsByTagName('select'),
 			selectCount = selects.length;
@@ -10,15 +10,16 @@
 	}	
 
 	var Select = function(element){
-		var FOCUS_CLASS = 'focus',
+		var FOCUS_CLASS = ' focus',
+			selectContainer = document.createElement('div'),
 			select = document.createElement('div'),
-			selectText = document.createElement('span'),
-			options = new Options(element.getElementsByTagName('option'), element);
+			options = new Options(element.getElementsByTagName('option'), selectContainer, changed);
 		function init(){
-			selectText.innerHTML = element.value;
 			select.className = 'select';
-			select.appendChild(selectText);
-			element.parentNode.insertBefore(select, element);
+			select.innerHTML = element.value;
+			selectContainer.className = 'selectContainer'
+			selectContainer.appendChild(select);
+			element.parentNode.insertBefore(selectContainer, element);
 			element.onchange = changed;
 			element.onfocus = focus;
 			element.onblur = blur;
@@ -29,12 +30,13 @@
 			options.show();
 		}
 
-		function changed(){
-			selectText.innerHTML = element.value;
+		function changed(value){
+			select.innerHTML = value;
+			element.value = value;
 		}
 
 		function focus(){
-			select.className = select.className + ' ' + FOCUS_CLASS;
+			select.className = select.className + FOCUS_CLASS;
 		}
 		function blur(){
 			var className = select.className;
@@ -46,27 +48,37 @@
 			
 	};
 
-	var Options = function(elements, selectElement){
+	var Options = function(elements, selectContainer, onChange){
 		var options = document.createElement('div');
 
 		function init(){
-			var count = 0
+			var count = 0,
 				optionsCount = elements.length;
-			options.style.display = 'none';
+			hide();
 			options.className = 'options';
 			for (count; count < optionsCount; count++){
 				var option = document.createElement('div');
 				option.innerHTML = elements[count].value;
+				option.onclick = itemSelected;
 				options.appendChild(option);
 			}
-			selectElement.parentNode.insertBefore(options, selectElement);
+			selectContainer.appendChild(options);
+			return options;
+		}
+
+		function itemSelected(){
+			onChange(this.innerHTML);
+			hide();
 		}
 
 		function show(){
 			options.style.display = 'block';
 		}
-		init();
 
+		function hide(){
+			options.style.display = 'none';
+		}
+		init();
 
 		return {
 			show : show
